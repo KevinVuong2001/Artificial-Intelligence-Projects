@@ -28,4 +28,4 @@
 ### Initial Setup: 
 ![alt text](Initial_Setup.png) <br />
 ### Process/Result:  
-![alt text](image-2.png) <br />
+![alt text](Result.png) <br />

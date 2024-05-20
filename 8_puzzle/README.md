@@ -6,7 +6,10 @@ The goal of this puzzle problem is to move the puzzle piece around to the point 
 4 5 3   &nbsp; -> &nbsp; 4 5 6<br />
 7 8 6   &emsp;    &emsp; 7 8 0<br />
 
-The process is mainly determining where to move our blank tile (0) where it's the most optimal. We would calculate the heuristic cost for each action and go with the least cost. It can move up, down, left, and right.
+The process is mainly determining where to shift our blank tile (0) where it's the most optimal. We would calculate the heuristic cost for each action and go with the least cost. It can move up, down, left, and right.
+
+### Basic Example (Best-First-Search and Number of Misplaced Tiles)
+![alt text](basic_example.png)
 
 ## Instructions
 1. Run the command `python3 8_puzzle.py`

@@ -10,8 +10,8 @@ class Individual:
         self.fitness = self.calculate_fitness()
         self.selection_probability = 0
 
-    def calculate_fitness(self): # Calculating the fitness with number of non-attacking pairs of queens
-        clashes = 0 # Minimum
+    def calculate_fitness(self):  # Calculating the fitness with number of non-attacking pairs of queens
+        clashes = 0  # Minimum
         n = len(self.chromosome)
         for i in range(n):
             for j in range(i + 1, n):
@@ -46,24 +46,24 @@ def select_parents(population):
     return parent1, parent2
 
 def crossover(parent1, parent2):
-    crossover_point = random.randint(1, 7) # Generate a random crossover point
-    child_chromosome = parent1.chromosome[:crossover_point] + parent2.chromosome[crossover_point:] # New child
+    crossover_point = random.randint(1, 7)  # Generate a random crossover point
+    child_chromosome = parent1.chromosome[:crossover_point] + parent2.chromosome[crossover_point:]  # New child
     return Individual(child_chromosome)
 
 def mutate(child, mutation_pct):
-    if random.random() < mutation_pct: # Trigger mutation
-        gene_to_mutate = random.randint(0, 7) # Randomly select an index to mutate
-        new_gene = random.randint(0, 7) # Randomly choose a value
-        child.chromosome[gene_to_mutate] = new_gene # Mutation applied with a random value
+    if random.random() < mutation_pct:  # Trigger mutation
+        gene_to_mutate = random.randint(0, 7)  # Randomly select an index to mutate
+        new_gene = random.randint(0, 7)  # Randomly choose a value
+        child.chromosome[gene_to_mutate] = new_gene  # Mutation applied with a random value
         child.fitness = child.calculate_fitness()  # Recalculate fitness after mutation
 
 def generate_children(population, num_children, mutation_pct):
     children = []
     for _ in range(num_children):
         parent1, parent2 = select_parents(population)
-        child = crossover(parent1, parent2) # Performing crossover
-        mutate(child, mutation_pct) # Applied Mutation if it meets with the percentage
-        children.append(child) # Update the list of children
+        child = crossover(parent1, parent2)  # Performing crossover
+        mutate(child, mutation_pct)  # Applied Mutation if it meets with the percentage
+        children.append(child)  # Update the list of children
     return children
 
 def genetic_algorithm(population_size, num_iterations, mutation_pct):
@@ -82,20 +82,20 @@ def genetic_algorithm(population_size, num_iterations, mutation_pct):
     print("----------")
 
     for _ in range(num_iterations):
-        calculate_select_probabilities(population) 
-        children = generate_children(population, population_size, mutation_pct) # Generate the children
-        population += children # Include children to population
-        population.sort(key=lambda x: x.fitness, reverse=True) # Sort it based on fitness score
+        calculate_select_probabilities(population)
+        children = generate_children(population, population_size, mutation_pct)  # Generate the children
+        population += children  # Include children to population
+        population.sort(key=lambda x: x.fitness, reverse=True)  # Sort it based on fitness score
         population = population[:population_size]  # Keep population size constant
 
-        generations += 1 # Updating the generation count
+        generations += 1  # Updating the generation count
 
         # Calculate average and best fitness
         avg_fitness = sum(individual.fitness for individual in population) / population_size
         best_fitness = max(ind.fitness for ind in population)
 
-        avg_fitness_history.append(avg_fitness) # Update the average fitness history
-        best_fitness_history.append(best_fitness) # Update the best fitness history
+        avg_fitness_history.append(avg_fitness)  # Update the average fitness history
+        best_fitness_history.append(best_fitness)  # Update the best fitness history
 
         # Print fitness details for the current generation
         print(f"Generation {generations}: Avg Fitness: {avg_fitness}, Best Fitness: {best_fitness}")
@@ -110,7 +110,7 @@ def genetic_algorithm(population_size, num_iterations, mutation_pct):
             break
 
     end_time = time.time()
-    best_solution = max(population, key=lambda x: x.fitness) # Get the best solution
+    best_solution = max(population, key=lambda x: x.fitness)  # Get the best solution
     execution_time = end_time - start_time
 
     # Log final population
@@ -120,6 +120,14 @@ def genetic_algorithm(population_size, num_iterations, mutation_pct):
     print("----------")
 
     return best_solution, generations, execution_time, avg_fitness_history, best_fitness_history
+
+def print_chessboard(chromosome):
+    print("\nChessboard:")
+    board = [['.' for _ in range(8)] for _ in range(8)]
+    for row in range(8):
+        board[row][chromosome[row]] = 'Q'
+    for row in board:
+        print(" ".join(row))
 
 if __name__ == '__main__':
     print("Welcome to the 8-Queens Problem")
@@ -137,3 +145,11 @@ if __name__ == '__main__':
     print("Best solution fitness:", best_solution.fitness)
     print("Number of generations:", generations)
     print("Execution time (seconds):", execution_time)
+
+    # Print the chessboard representation of the best solution
+    print_chessboard(best_solution.chromosome)
+
+    # Print average and best fitness history
+    print("\nFitness over generations:")
+    for gen in range(generations):
+        print(f"Generation {gen + 1}: Avg Fitness: {avg_fitness_history[gen]}, Best Fitness: {best_fitness_history[gen]}")
